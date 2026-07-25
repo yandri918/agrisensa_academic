@@ -1,0 +1,47 @@
+base:
+  random_state: 42
+
+data:
+  raw_path: "data/raw/yield.csv"
+  processed_dir: "data/processed"
+  test_size: 0.2
+
+train:
+  estimator: "RandomForestRegressor"
+  n_estimators: 150
+  max_depth: 20
+  model_dir: "models"
+  model_path: "models/yield_model.pkl"
+
+evaluate:
+  metrics_path: "evaluation.json"
+
+crop_data:
+  raw_path: "data/raw/Crop_recommendation.csv"
+  processed_dir: "data/processed"
+  test_size: 0.2
+
+crop_train:
+  estimator: "RandomForestClassifier"
+  n_estimators: 100
+  max_depth: 15
+  model_dir: "models"
+  model_path: "models/crop_recommendation_model.pkl"
+
+crop_evaluate:
+  metrics_path: "evaluation_crop.json"
+
+price_data:
+  raw_path: "data/raw/synthetic_crop_prices_java.csv"
+  processed_dir: "data/processed"
+  test_size: 0.2
+
+price_train:
+  estimator: "RandomForestRegressor"
+  n_estimators: 100
+  max_depth: 15
+  model_dir: "models"
+  model_path: "models/price_model.pkl"
+
+price_evaluate:
+  metrics_path: "evaluation_price.json"

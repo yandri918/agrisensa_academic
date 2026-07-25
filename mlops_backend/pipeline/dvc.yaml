@@ -1,0 +1,120 @@
+stages:
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+      - src/preprocess.py
+      - data/raw/yield.csv
+    params:
+      - data.raw_path
+      - data.processed_dir
+      - data.test_size
+      - base.random_state
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - data/processed/train.csv
+    params:
+      - base.random_state
+      - train.estimator
+      - train.n_estimators
+      - train.max_depth
+      - train.model_path
+    outs:
+      - models/yield_model.pkl
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - data/processed/test.csv
+      - models/yield_model.pkl
+    params:
+      - evaluate.metrics_path
+    metrics:
+      - evaluation.json:
+          cache: false
+
+  preprocess_crop:
+    cmd: python src/preprocess_crop.py
+    deps:
+      - src/preprocess_crop.py
+      - data/raw/Crop_recommendation.csv
+    params:
+      - crop_data.raw_path
+      - crop_data.processed_dir
+      - crop_data.test_size
+      - base.random_state
+    outs:
+      - data/processed/train_crop.csv
+      - data/processed/test_crop.csv
+
+  train_crop:
+    cmd: python src/train_crop.py
+    deps:
+      - src/train_crop.py
+      - data/processed/train_crop.csv
+    params:
+      - base.random_state
+      - crop_train.estimator
+      - crop_train.n_estimators
+      - crop_train.max_depth
+      - crop_train.model_path
+    outs:
+      - models/crop_recommendation_model.pkl
+
+  evaluate_crop:
+    cmd: python src/evaluate_crop.py
+    deps:
+      - src/evaluate_crop.py
+      - data/processed/test_crop.csv
+      - models/crop_recommendation_model.pkl
+    params:
+      - crop_evaluate.metrics_path
+    metrics:
+      - evaluation_crop.json:
+          cache: false
+
+  preprocess_price:
+    cmd: python src/preprocess_price.py
+    deps:
+      - src/preprocess_price.py
+      - data/raw/synthetic_crop_prices_java.csv
+    params:
+      - price_data.raw_path
+      - price_data.processed_dir
+      - price_data.test_size
+      - base.random_state
+    outs:
+      - data/processed/train_price.csv
+      - data/processed/test_price.csv
+
+  train_price:
+    cmd: python src/train_price.py
+    deps:
+      - src/train_price.py
+      - data/processed/train_price.csv
+    params:
+      - base.random_state
+      - price_train.estimator
+      - price_train.n_estimators
+      - price_train.max_depth
+      - price_train.model_path
+    outs:
+      - models/price_model.pkl
+
+  evaluate_price:
+    cmd: python src/evaluate_price.py
+    deps:
+      - src/evaluate_price.py
+      - data/processed/test_price.csv
+      - models/price_model.pkl
+    params:
+      - price_evaluate.metrics_path
+    metrics:
+      - evaluation_price.json:
+          cache: false

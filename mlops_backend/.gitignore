@@ -1,0 +1,32 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs and temp files
+logs/
+uploads/temp_images/
+
+# Local configuration files
+.env
+.env.*
+
+# MLOps Pipeline
+pipeline/data/raw/yield.csv
+pipeline/data/processed/
+pipeline/models/
+mlruns/
+pipeline/mlruns/
+pipeline/evaluation.json
+
