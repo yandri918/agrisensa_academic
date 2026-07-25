@@ -5,6 +5,7 @@ import yaml
 import joblib
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import mlflow
+import numpy as np
 
 def evaluate():
     # Load parameters
@@ -36,7 +37,8 @@ def evaluate():
     
     # Metrics
     mae = mean_absolute_error(y_test, predictions)
-    rmse = mean_squared_error(y_test, predictions, squared=False)
+    mse = mean_squared_error(y_test, predictions)
+    rmse = np.sqrt(mse)
     r2 = r2_score(y_test, predictions)
     
     metrics = {
