@@ -42,8 +42,8 @@ jobs:
           dvc pull || true
 
       - name: Run DVC Pipeline
-        # We use dvc repro to reproduce the pipeline if data or code has changed
-        run: dvc repro
+        # --force ensures all stages run and evaluation JSON files are always created
+        run: dvc repro --force
 
       - name: Upload Evaluation Metrics
         uses: actions/upload-artifact@v4
