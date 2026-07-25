@@ -39,7 +39,7 @@ jobs:
           dvc remote modify origin --local auth basic
           dvc remote modify origin --local user yandri918
           dvc remote modify origin --local password $DAGSHUB_TOKEN
-          dvc pull
+          dvc pull || true
 
       - name: Run DVC Pipeline
         # We use dvc repro to reproduce the pipeline if data or code has changed
