@@ -31,11 +31,15 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; else pip install dvc pandas scikit-learn mlflow pyyaml; fi
 
-      # In a real scenario, DVC would pull data from remote storage here (e.g. AWS S3, GCS, GDrive)
-      # - name: Pull data via DVC
-      #   run: dvc pull
-      #   env:
-      #     GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+      # Pull data dari DagsHub menggunakan Token Rahasia
+      - name: Configure DVC & Pull Data
+        env:
+          DAGSHUB_TOKEN: ${{ secrets.DAGSHUB_USER_TOKEN }}
+        run: |
+          dvc remote modify origin --local auth basic
+          dvc remote modify origin --local user yandri918
+          dvc remote modify origin --local password $DAGSHUB_TOKEN
+          dvc pull
 
       - name: Run DVC Pipeline
         # We use dvc repro to reproduce the pipeline if data or code has changed
