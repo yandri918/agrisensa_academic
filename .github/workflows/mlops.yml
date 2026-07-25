@@ -45,6 +45,17 @@ jobs:
         # We use dvc repro to reproduce the pipeline if data or code has changed
         run: dvc repro
 
+      - name: Upload Evaluation Metrics
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluation-metrics
+          path: |
+            mlops_backend/pipeline/evaluation.json
+            mlops_backend/pipeline/evaluation_crop.json
+            mlops_backend/pipeline/evaluation_price.json
+          retention-days: 30
+
       # CML (Continuous Machine Learning) can be used here to comment metrics on the PR
       # - name: Report metrics with CML
       #   uses: iterative/setup-cml@v1
