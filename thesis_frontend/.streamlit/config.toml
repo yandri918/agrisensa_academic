@@ -1,0 +1,19 @@
+[theme]
+# AgriSensa Premium Emerald Dark Theme
+primaryColor = "#10b981"
+backgroundColor = "#0f172a"
+secondaryBackgroundColor = "#1e293b"
+textColor = "#f8fafc"
+font = "sans serif"
+
+[server]
+enableCORS = false
+enableXsrfProtection = false
+maxUploadSize = 512
+
+[browser]
+gatherUsageStats = false
+showErrorDetails = false
+
+[client]
+showErrorDetails = false

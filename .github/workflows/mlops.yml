@@ -1,0 +1,52 @@
+name: MLOps CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  train-and-evaluate:
+    runs-on: ubuntu-latest
+    
+    # Optional: Set default working directory if pipeline is not at root
+    defaults:
+      run:
+        working-directory: mlops_backend/pipeline
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; else pip install dvc pandas scikit-learn mlflow pyyaml; fi
+
+      # In a real scenario, DVC would pull data from remote storage here (e.g. AWS S3, GCS, GDrive)
+      # - name: Pull data via DVC
+      #   run: dvc pull
+      #   env:
+      #     GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+
+      - name: Run DVC Pipeline
+        # We use dvc repro to reproduce the pipeline if data or code has changed
+        run: dvc repro
+
+      # CML (Continuous Machine Learning) can be used here to comment metrics on the PR
+      # - name: Report metrics with CML
+      #   uses: iterative/setup-cml@v1
+      #   env:
+      #     REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     echo "## Price Model Metrics" >> report.md
+      #     cat evaluation_price.json >> report.md
+      #     cml comment create report.md
